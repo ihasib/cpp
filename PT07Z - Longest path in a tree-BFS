@@ -1,0 +1,119 @@
+
+/*-----------------With the name of ALLAH--------------*/
+//ACC
+#include<bits/stdc++.h>
+using namespace std;
+
+#define ll long long
+#define dl double
+#define sf scanf
+#define pf printf
+
+#define MS0(x) memset(x,0,sizeof(x))
+#define MS1(x) memset(x,1,sizeof(x))
+#define SORT(a,n) sort(begin(a),begin(a)+n)
+#define REV(a,n) reverse(begin(a),begin(a)+n)
+
+#define loop(i,ini,n) for(ll i=ini;i<=n;i++)
+#define rloop(i,ini,n) for(ll i=ini;i>=n;i--)
+#define rev_vector(a,n) reverse(begin(a),begin(a)+n)
+
+#define MAX 10003
+
+vector<ll> graph[MAX];
+
+ll store_node;
+//-------------------bfs function------------------
+
+void bfs1(ll src)
+{
+	queue<ll>Q;
+	ll visited[MAX]={0} , level[MAX]={0} , mx=0;
+
+	Q.push(src);
+	visited[src]=1;
+	level[src]=0;
+	store_node=src;
+
+	while(!Q.empty())
+	{
+		ll u=Q.front();
+		Q.pop();
+
+		loop(k,0,graph[u].size()-1)
+		{
+			ll v=graph[u][k];
+			if(!visited[v])
+			{
+			    Q.push(v);
+			    visited[v]=1;
+				level[v]=level[u]+1;
+				if(mx<level[v])
+				{
+					mx=level[v];
+					store_node=v;
+				}
+			}
+		}
+	}
+}
+
+//-------------bfs function-------------------
+
+ll bfs2(ll src)
+{
+	queue<ll>Q;
+	ll visited[MAX]={0} , level[MAX]={0} , mx=0;
+
+	Q.push(src);
+	visited[src]=1;
+	level[src]=0;
+
+	while(!Q.empty())
+	{
+		ll u=Q.front();
+		Q.pop();
+
+		loop(k,0,graph[u].size()-1)
+		{
+			ll v=graph[u][k];
+			if(!visited[v])
+			{
+			    Q.push(v);
+			    visited[v]=1;
+				level[v]=level[u]+1;
+				if(mx<level[v])
+				{
+					mx=level[v];
+					//cout<<"\nv="<<v<<"      level="<<level[v]<<"\n";
+				}
+            }
+		}
+	}
+	return mx;
+}
+
+//-----------------main function-----------------------
+
+int main()
+{
+    //freopen("inp.txt","r",stdin);
+    ll N,a,b;
+    while(sf("%lld",&N)==1)
+    {
+    	MS0(graph);
+		loop(i,1,N-1)
+		{
+			sf("%lld %lld",&a,&b);
+			graph[a].push_back(b);
+			graph[b].push_back(a);
+		}
+
+		bfs1(a);
+		//cout<<store_node;
+		ll ans=bfs2(store_node);
+
+		pf("%lld\n",ans);
+    }
+    return 0;
+}
