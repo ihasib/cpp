@@ -1,0 +1,81 @@
+
+/*-----------------With the name of ALLAH--------------*/
+//ACC
+#include<bits/stdc++.h>
+using namespace std;
+
+#define ll long long
+#define dl double
+#define sf scanf
+#define pf printf
+
+#define MS0(x) memset(x,0,sizeof(x))
+#define MS1(x) memset(x,1,sizeof(x))
+#define SORT(a,n) sort(begin(a),begin(a)+n)
+#define REV(a,n) reverse(begin(a),begin(a)+n)
+
+#define loop(i,ini,n) for(ll i=ini;i<=n;i++)
+#define rloop(i,ini,n) for(ll i=ini;i>=n;i--)
+#define rev_vector(a,n) reverse(begin(a),begin(a)+n)
+
+#define MAX 10003
+
+vector<ll> graph[MAX];
+
+//-----------------dfs function ------------------
+
+ll mx,visited[MAX]={0};
+
+ll dfs(ll src)
+{
+    visited[src]=1;
+    ll temp,larger=0,largest=0;
+
+//--------we define the most distant node {largest} and immediate smaller distant node {larger} just for this current node[src].....
+
+    for(ll i=0;i<graph[src].size();i++)
+    {
+        ll u=graph[src][i];
+        if(visited[u]==0)
+        {
+            temp=dfs(u);
+            if(temp>largest)
+            {
+                larger=largest;
+                largest=temp;
+            }
+            else if(temp>larger)
+                    larger=temp;
+        }
+        mx=max(mx,larger+largest);
+    }
+    return largest+1;
+}
+
+
+
+
+//-----------------main function-----------------------
+
+int main()
+{
+    //freopen("inp.txt","r",stdin);
+    ll N,a,b;
+    while(sf("%lld",&N)==1)
+    {
+        mx=-1;
+    	MS0(graph);
+    	MS0(visited);
+		loop(i,1,N-1)
+		{
+			sf("%lld %lld",&a,&b);
+			graph[a].push_back(b);
+			graph[b].push_back(a);
+		}
+
+		ll ans=dfs(1);
+
+		pf("%lld\n",mx);
+    }
+    return 0;
+}
