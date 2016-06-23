@@ -1,0 +1,88 @@
+
+/*-----------------With the name of ALLAH--------------*/
+
+#include<bits/stdc++.h>
+using namespace std;
+
+#define ll long long
+#define dl double
+#define sf scanf
+#define pf printf
+
+#define MS0(x) memset(x,0,sizeof(x))
+#define MS1(x) memset(x,1,sizeof(x))
+#define SORT(a,n) sort(begin(a),begin(a)+n)
+#define REV(a,n) reverse(begin(a),begin(a)+n)
+
+#define loop(i,ini,n) for(ll i=ini;i<=n;i++)
+#define rloop(i,ini,n) for(ll i=ini;i>=n;i--)
+#define rev_vector(a,n) reverse(begin(a),begin(a)+n)
+#define MAX 100
+#define mp  make_pair
+#define pr pair<ll,ll>
+
+ll knitX[]={+2,+2,-2,-2,+1,+1,-1,-1};
+ll knitY[]={+1,-1,+1,-1,+2,-2,+2,-2};
+
+pr p;
+ll visited[10][10],level[10][10];
+
+//-------------BFS function-----------------
+
+ll BFS(ll x,ll y,ll dstx,ll dsty)
+{
+    queue<pr>Q;
+    MS0(level);
+    MS0(visited);
+
+    Q.push(mp(x,y));
+    visited[x][y]=1;
+
+    while(!Q.empty())
+    {
+        pr u=Q.front();
+        Q.pop();
+        x=u.first;
+        y=u.second;
+        loop(i,0,7)
+        {
+            ll nx=x+knitX[i];
+            ll ny=y+knitY[i];
+
+            pr v=mp(nx,ny);
+            if(visited[nx][ny]==0 && (nx>=1 && nx<=8 && ny>=1 && ny<=8) )
+            {
+                Q.push(v);
+                visited[nx][ny]=1;
+                level[nx][ny]=level[x][y]+1;
+            }
+        }
+    }
+    return level[dstx][dsty];
+}
+
+//--------------------main funtion-------------
+
+int main()
+{
+    //freopen("inp.txt","r",stdin);
+    ll T,x,y,nx,ny,srcx,srcy;
+    char s1[3],s2[3];
+    sf("%lld",&T);
+    loop(i,1,T)
+    {
+		sf("%s",s1);
+		sf("%s",s2);
+
+		srcx=s1[0]-96;
+		srcy=s1[1]-48;
+
+        ll dstx=s2[0]-96;
+        ll dsty=s2[1]-48;
+
+		ll ans=BFS(srcx,srcy,dstx,dsty);
+        pf("%lld\n",ans);
+    }
+    return 0;
+}
+
