@@ -1,0 +1,106 @@
+
+/*-----------------With the name of ALLAH--------------*/
+
+#include<bits/stdc++.h>
+using namespace std;
+
+#define ll long long
+#define dl double
+#define sf scanf
+#define pf printf
+
+#define MS0(x) memset(x,0,sizeof(x))
+#define MS1(x) memset(x,1,sizeof(x))
+#define SORT(a,n) sort(begin(a),begin(a)+n)
+#define REV(a,n) reverse(begin(a),begin(a)+n)
+
+#define loop(i,ini,n) for(ll i=ini;i<=n;i++)
+#define rloop(i,ini,n) for(ll i=ini;i>=n;i--)
+#define rev_vector(a,n) reverse(begin(a),begin(a)+n)
+
+#define pr pair<ll,ll>
+#define maxx 102
+#define maxDist 10000000000000
+
+ll Time[maxx],cost[maxx][maxx];
+vector<ll>graph[maxx];
+
+//----------------pair structure----------------
+
+struct ppair{
+    ll u,w;
+    ppair(ll a,ll b)
+    {
+        u = a;
+        w = b;
+    }
+    bool operator<(const ppair &p)const
+    {
+        return p.w<w;   //lowest w is Pr_Qu.top() value
+    }
+};
+
+//---------------dijkstra------------------------
+
+ll diskstra(ll node)
+{
+    priority_queue<ppair>P_Qu;
+
+    Time[node]=0;
+    P_Qu.push(ppair(node,Time[node]) );
+
+    while(!P_Qu.empty())
+    {
+        ppair uu=P_Qu.top();//u=node
+        P_Qu.pop();
+        ll u=uu.u;
+        //cout<<"\n u ="<<u<<" Time[u] ="<<Time[u]<<endl;
+        for(ll i=0;i<graph[u].size();i++)
+        {
+            ll v=graph[u][i];
+            {
+                if(Time[v]>Time[u]+cost[u][v])
+                {
+                    Time[v]=Time[u]+cost[u][v];
+                    //cout<<"v="<<v<<" Time="<<Time[v]<<endl;
+                    P_Qu.push(ppair(v,Time[v]) );
+                }
+            }
+        }
+    }
+}
+
+int main()
+{
+    //freopen("inp.txt","r",stdin);
+    ll N,E,T,M,x,y,z;
+    while(sf("%lld",&N)==1)
+    {
+    	loop(i,1,100)
+    	{
+    	    Time[i]=maxDist;
+    	}
+    	MS0(graph);
+    	//MS0(cost);
+		sf("%lld %lld %lld",&E,&T,&M);
+
+		loop(i,1,M)
+		{
+			sf("%lld %lld %lld",&x,&y,&z);
+
+			graph[y].push_back(x);//since one directional
+			cost[y][x]=z;
+		}
+
+        diskstra(E);
+
+		ll c=0;
+		loop(k,1,N)
+		{
+			if(Time[k]<=T)
+				c++;
+		}
+		pf("%lld\n",c);
+    }
+    return 0;
+}
