@@ -1,0 +1,97 @@
+#include<bits/stdc++.h>
+using namespace std;
+
+int diskstra(int node);
+vector<int>graph[100];
+#define pr pair<int,int>
+#define ll long long
+
+ll srcnode,destination;
+// input
+/*
+8 11
+1 5 2
+1 2 4
+1 4 10
+2 3 18
+2 4 8
+4 5 5
+4 7 11
+4 8 9
+7 6 1
+8 6 2
+3 4 11
+
+*/
+
+struct ppair{
+    ll u,w;
+    ppair(ll a,ll b)
+    {
+        u = a;
+        w = b;
+    }
+    bool operator<(const ppair &p)const
+    {
+        return p.w<w;   //lowest w is Pr_Qu.top() value
+    }
+};
+
+ll dist[100],cost[100][100];
+
+ll prims(ll node)
+{
+    priority_queue<ppair>P_Qu;
+
+    ll ans=0,visited[100]={0};
+    dist[node]=0;
+    P_Qu.push(ppair(node,dist[node]) );
+
+    while(!P_Qu.empty())
+    {
+        ppair uu=P_Qu.top();//u=node
+        P_Qu.pop();
+        ll u=uu.u;
+
+        if(visited[u]==0)
+        {
+            visited[u]=1;
+            ans+=uu.w;
+            cout<<"\n u ="<<u<<" dist[u] ="<<dist[u]<<endl;
+            for(ll i=0;i<graph[u].size();i++)
+            {
+                ll v=graph[u][i];//cout<<v<<endl;
+                if(visited[v]==0)
+                {
+                    dist[v]=cost[u][v];
+                    cout<<"---------v="<<v<<" dist="<<dist[v]<<endl;
+                    P_Qu.push(ppair(v,dist[v]) );
+                }
+            }
+        }
+    }
+    return ans;
+}
+
+int main()
+{
+
+    ll node,edge,i,j,x,y,w;
+    memset(dist,111111,sizeof(dist));
+    cin>>node>>edge;
+    for(i=1;i<=edge;i++)
+    {
+        cin>>x>>y>>w;
+        graph[x].push_back(y);
+        graph[y].push_back(x);
+        cost[x][y]=w;
+        cost[y][x]=w;
+        srcnode=1;
+    }
+    destination=4;
+    ll s=prims(srcnode);
+    cout<<s;
+    return 0;
+}
+
+
