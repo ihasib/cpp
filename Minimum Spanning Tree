@@ -1,7 +1,6 @@
 #include<bits/stdc++.h>
 using namespace std;
 
-int diskstra(int node);
 vector<int>graph[100];
 #define pr pair<int,int>
 #define ll long long
