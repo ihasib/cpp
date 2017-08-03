@@ -1,5 +1,5 @@
 
-/*-----------------With the name of ALLAH--------------*/
+/*-------------With the name of ALLAH--------------*/
 
 #include<bits/stdc++.h>
 using namespace std;
